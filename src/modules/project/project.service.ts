@@ -15,9 +15,9 @@ export const createProjectIntoDB = async (projectData: IProject,userId:string) =
 }
 export const getAllProjectsFromDB = async ( page: number = 1, limit: number = 10) => {
     const skip = (page - 1) * limit;
-    const projects = await Project.find().skip(skip).limit(limit);
+    const projects = await Project.find({ isDeleted: false }).skip(skip).limit(limit);
         
-    const total = await Project.countDocuments();
+    const total = await Project.countDocuments({ isDeleted: false });
     return {
         projects,
         pagination: {
@@ -37,7 +37,11 @@ export const updateProjectIntoDB = async (id: string, projectData: Partial<IProj
     return project;
 }
 export const deleteProjectFromDB = async (id: string) => {
-    const project = await Project.findByIdAndDelete(id);
+    const project = await Project.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true }
+    );
     if (!project) {
         throw new AppError(httpStatus.NOT_FOUND, 'Project not found');
     }
