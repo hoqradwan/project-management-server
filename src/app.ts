@@ -33,7 +33,7 @@ app.use("/api/v1",router);
 app.get("/", (req: Request, res: Response) => {
   logger.info("Root endpoint hit");
   const template = `<h1 style="text-align:center">Hello</h1>
-    <h2 style="text-align:center">Welcome to e-commerce Server </h2>
+    <h2 style="text-align:center">Welcome to project management Server </h2>
  
     `;
   res.status(200).send(template);
